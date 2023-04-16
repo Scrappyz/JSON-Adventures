@@ -19,7 +19,7 @@ vector<Scenario> loadScenes()
     vector<Scenario> v;
 
     string temp;
-    ifstream scenario("../../resources/scenarios.txt");
+    ifstream scenario("resources/scenarios.txt");
     if(scenario.is_open()) {
         Scenario scene;
         string str;
@@ -32,13 +32,16 @@ vector<Scenario> loadScenes()
                 str.push_back('\n');
                 continue;
             }
-            if(temp.substr(0, 3) == "id:") {
+            if(temp.substr(0, 3) == "===") {
                 if(!str.empty()) {
                     scene.setScenario(str);
                     str.clear();
                     v.push_back(scene);
                     scene = Scenario();
                 }
+                continue;
+            }
+            if(temp.substr(0, 3) == "id:") {
                 i = 3;
                 while(i < temp.size() && temp[i] == ' ') {
                     i++;
@@ -74,7 +77,9 @@ vector<Scenario> loadScenes()
         if(!str.empty()) {
             scene.setScenario(str);
             str.clear();
+            v.push_back(scene);
         }
+        scene = Scenario();
     } else {
         cout << "[Error] Could not open file" << endl;
     }
@@ -84,7 +89,6 @@ vector<Scenario> loadScenes()
 int main()
 {
     vector<Scenario> scenes = loadScenes();
-    scenes[0].printScenario();
-    scenes[1].printScenario();
+    printScenarios(scenes);
     return 0;
 }
