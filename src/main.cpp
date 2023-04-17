@@ -136,7 +136,7 @@ void loadScenes(vector<Scenario>& v, unordered_map<string, int>& pos)
 
 int main()
 {
-    unordered_map<string, int> pos;
+    unordered_map<string, int> pos; // <id, position> to keep track of scenario position in scenes
     vector<Scenario> scenes;
     loadScenes(scenes, pos);
     printScenarios(scenes);
