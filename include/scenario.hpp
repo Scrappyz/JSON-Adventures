@@ -13,7 +13,7 @@ class Scenario {
         std::unordered_set<std::string> keywords;
         //static std::unordered_map<ScenarioId, std::unordered_set<std::pair<int, std::string>>> choices;
 
-        void printKeywords();
+        void printKeywords() const;
         //void printConditions();
     public:
         Scenario() : scenario_id(), scenario(), keywords{} {}
@@ -57,6 +57,11 @@ class Scenario {
         {
             this->keywords = keywords;
         }
+
+        void addKeyword(const std::string& keyword)
+        {
+            keywords.insert(keyword);
+        }
         // void setChoices(const std::unordered_map<ScenarioId, std::unordered_set<std::pair<int, std::string>>>& choices)
         // {
         //     this->choices = choices;
@@ -65,7 +70,7 @@ class Scenario {
         // static void addToChoices(const ScenarioId& id, const int& choice);
         // static void addToChoices(const ScenarioId& id, const std::string& choice);
 
-        void printScenario();
+        void printScenario() const;
 
         struct ScenarioHash {
             std::size_t operator()(const Scenario& s) const 

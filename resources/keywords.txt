@@ -1,0 +1,6 @@
+id: A, A1, A2, A3
+sleep
+die
+up
+wake
+======

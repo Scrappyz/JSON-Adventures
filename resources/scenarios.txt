@@ -28,6 +28,3 @@ You decided to sleep even more. Apparently, this was a bad idea.
 While you were sleeping, you felt a strange pain in your chest.
 Apparently, you had a heart attack and never woke up.
 ==========================================================================
-id: A4
-title: bum
-ggg
