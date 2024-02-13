@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include <random>
 #include "json.hpp"
 #include "os.hpp"
 
@@ -44,6 +45,14 @@ std::string toLower(std::string str)
     return str;
 }
 
+int randomNumber(int min, int max)
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(min, max);
+    return dist6(rng);
+}
+
 std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& keywords)
 {
     input = toLower(input);
@@ -58,9 +67,14 @@ std::string getNextScenario(std::string input, const std::unordered_map<std::str
 void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
-    json data;
+    std::string excuses_file = path::joinPath(scenario_dir, "../excuses.json");
+    std::ifstream f(excuses_file);
+    json data = json::parse(f);
+    std::vector<std::string> excuses = data.at("excuses");
+    f.close();
+
     while(true) {
-        std::ifstream f(scenario_file);
+        f.open(scenario_file);
         data = json::parse(f);
         f.close();
 
@@ -85,7 +99,8 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             if(!next_scenario.empty()) {
                 break;
             }
-            std::cout << "There is a time and place for everything but not now." << std::endl;
+            std::cout << excuses[randomNumber(0, excuses.size()-1)] << std::endl;
+            std::cout << std::endl;
         }
 
         scenario_file = path::joinPath(scenario_dir, appendExtension(next_scenario));
