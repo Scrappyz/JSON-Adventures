@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 get_filename_component(ProjectId ${CMAKE_SOURCE_DIR} NAME)
 string(REGEX REPLACE "[- ]" "" ProjectId ${ProjectId})
 project(${ProjectId} VERSION 0.1.0)
