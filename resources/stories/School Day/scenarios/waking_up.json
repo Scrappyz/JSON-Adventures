@@ -1,0 +1,17 @@
+{
+    "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.",
+    "gameOver": false,
+    "keywords": {
+        "sleep": "sleep.json",
+        "up": "get_up.json",
+        "stand": "get_up.json",
+        "jerk": "masturbate.json",
+        "masturbate": "masturbate.json",
+        "porn": "masturbate.json",
+        "love": "masturbate.json",
+        "choke": "death_in_bed.json",
+        "die": "death_in_bed.json",
+        "suicide": "death_in_bed.json",
+        "unalive": "death_in_bed.json"
+    }
+}

@@ -44,6 +44,17 @@ std::string toLower(std::string str)
     return str;
 }
 
+std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& keywords)
+{
+    input = toLower(input);
+    for(const auto i : keywords) {
+        if(input.find(i.first) != std::string::npos) {
+            return i.second;
+        }
+    }
+    return std::string();
+}
+
 void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
@@ -53,13 +64,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         data = json::parse(f);
         f.close();
 
-        std::string title = data.at("title");
         std::string scenario = data.at("scenario");
-
-        if(!title.empty()) {
-            std::cout << title << std::endl;
-            std::cout << std::endl;
-        }
         std::cout << scenario << std::endl;
         std::cout << std::endl;
 
@@ -70,36 +75,27 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
         std::unordered_map<std::string, std::string> keywords = data.at("keywords");
         std::string input;
+        std::string next_scenario;
 
         while(true) {
             std::cout << "> ";
             std::getline(std::cin, input);
-            std::cout << std::endl;
 
-            input = toLower(input);
-            if(keywords.count(input) > 0) {
+            next_scenario = getNextScenario(input, keywords);
+            if(!next_scenario.empty()) {
                 break;
-            } 
+            }
             std::cout << "There is a time and place for everything but not now." << std::endl;
         }
 
-        scenario_file = path::joinPath(scenario_dir, appendExtension(data.at("keywords").at(input)));
+        scenario_file = path::joinPath(scenario_dir, appendExtension(next_scenario));
     }
 }
 
 int main()
 {
-    std::string scenario_dir = path::joinPath(path::sourcePath(), "../../resources/scenarios");
-    std::string start_scenario = appendExtension("scenario1");
+    std::string scenario_dir = path::joinPath(path::sourcePath(), "../../resources/stories/School Day/scenarios");
+    std::string start_scenario = appendExtension("waking_up");
     play(scenario_dir, start_scenario);
-    // std::string scenario_file = appendExtension("scenario2");
-
-    // std::string name = "Making Breakfast";
-    // std::string scenario = "You got up and went to the kitchen to make breakfast.";
-    // std::unordered_map<std::string, std::string> keywords = {
-        
-    // };
-    // bool game_over = false;
-    // writeScenario(path::joinPath(scenario_dir, scenario_file), name, scenario, keywords, game_over);
     return 0;
 }
