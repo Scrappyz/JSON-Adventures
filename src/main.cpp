@@ -108,7 +108,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 int main()
 {
     std::string scenario_dir = path::joinPath(path::sourcePath(), "../../resources/stories/School Day/scenarios");
-    std::string start_scenario = appendExtension("waking_up");
+    std::string start_scenario = appendExtension("start");
     play(scenario_dir, start_scenario);
     return 0;
 }
