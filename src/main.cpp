@@ -53,12 +53,33 @@ int randomNumber(int min, int max)
     return dist6(rng);
 }
 
+std::vector<std::string> parseChoice(const std::string& choice)
+{
+    std::vector<std::string> choices;
+    std::string temp;
+    for(int i = 0; i < choice.size(); i++) {
+        if(choice[i] == '|') {
+            choices.push_back(temp);
+            temp.clear();
+            continue;
+        }
+        temp.push_back(choice[i]);
+    }
+    if(!temp.empty()) {
+        choices.push_back(temp);
+    }
+    return choices;
+}
+
 std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& choices)
 {
     input = toLower(input);
     for(const auto i : choices) {
-        if(input.find(i.first) != std::string::npos) {
-            return i.second;
+        std::vector<std::string> parsed = parseChoice(i.first);
+        for(int j = 0; j < parsed.size(); j++) {
+            if(input.find(parsed[j]) != std::string::npos) {
+                return i.second;
+            }
         }
     }
     return std::string();

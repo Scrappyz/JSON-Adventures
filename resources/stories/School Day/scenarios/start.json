@@ -3,17 +3,9 @@
     "gameOver": false,
     "choices": {
         "sleep": "sleep.json",
-        "up": "get_up.json",
-        "stand": "get_up.json",
-        "jerk": "masturbate.json",
-        "masturbate": "masturbate.json",
-        "porn": "masturbate.json",
-        "love": "masturbate.json",
-        "choke": "death_in_bed.json",
-        "die": "death_in_bed.json",
-        "kill yourself": "death_in_bed.json",
-        "suicide": "death_in_bed.json",
-        "unalive": "death_in_bed.json"
+        "up|stand": "get_up.json",
+        "jerk|masturbate|porn|love": "masturbate.json",
+        "choke|die|kill yourself|suicide|unalive": "death_in_bed.json"
     },
     "excuses": [
         "Go away intrusive thoughts.",
