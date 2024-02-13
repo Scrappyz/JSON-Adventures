@@ -1,7 +1,7 @@
 {
     "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.",
     "gameOver": false,
-    "keywords": {
+    "choices": {
         "sleep": "sleep.json",
         "up": "get_up.json",
         "stand": "get_up.json",
@@ -11,7 +11,13 @@
         "love": "masturbate.json",
         "choke": "death_in_bed.json",
         "die": "death_in_bed.json",
+        "kill yourself": "death_in_bed.json",
         "suicide": "death_in_bed.json",
         "unalive": "death_in_bed.json"
-    }
+    },
+    "excuses": [
+        "Go away intrusive thoughts.",
+        "Maybe another time.",
+        "You are too tired to do that."
+    ]
 }

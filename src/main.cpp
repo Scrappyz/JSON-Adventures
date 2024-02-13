@@ -9,12 +9,12 @@
 using json = nlohmann::json;
 namespace path = os::path;
 
-void writeScenario(const std::string& file, const std::string& name, const std::string& scenario, const std::unordered_map<std::string, std::string>& keywords, bool game_over = false)
+void writeScenario(const std::string& file, const std::string& name, const std::string& scenario, const std::unordered_map<std::string, std::string>& choices, bool game_over = false)
 {
     json j;
     j["title"] = name;
     j["scenario"] = scenario;
-    j["keywords"] = keywords;
+    j["choices"] = choices;
     j["gameOver"] = game_over;
 
     std::ofstream f(file);
@@ -53,10 +53,10 @@ int randomNumber(int min, int max)
     return dist6(rng);
 }
 
-std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& keywords)
+std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& choices)
 {
     input = toLower(input);
-    for(const auto i : keywords) {
+    for(const auto i : choices) {
         if(input.find(i.first) != std::string::npos) {
             return i.second;
         }
@@ -67,11 +67,8 @@ std::string getNextScenario(std::string input, const std::unordered_map<std::str
 void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
-    std::string excuses_file = path::joinPath(scenario_dir, "../excuses.json");
-    std::ifstream f(excuses_file);
-    json data = json::parse(f);
-    std::vector<std::string> excuses = data.at("excuses");
-    f.close();
+    std::ifstream f;
+    json data;
 
     while(true) {
         f.open(scenario_file);
@@ -87,7 +84,8 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             break;
         }
 
-        std::unordered_map<std::string, std::string> keywords = data.at("keywords");
+        std::unordered_map<std::string, std::string> choices = data.at("choices");
+        std::vector<std::string> excuses = data.at("excuses");
         std::string input;
         std::string next_scenario;
 
@@ -95,7 +93,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             std::cout << "> ";
             std::getline(std::cin, input);
 
-            next_scenario = getNextScenario(input, keywords);
+            next_scenario = getNextScenario(input, choices);
             if(!next_scenario.empty()) {
                 break;
             }

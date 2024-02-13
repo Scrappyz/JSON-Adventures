@@ -1,0 +1,12 @@
+{
+    "scenario": "You stood up and went to the kitchen.\nYou thought about what to cook.\n\"Maybe some eggs would be nice.\" you thought.",
+    "gameOver": false,
+    "choices": {
+        
+    },
+    "excuses": [
+        "Go away intrusive thoughts.",
+        "Maybe another time.",
+        "You are too tired to do that."
+    ]
+}
