@@ -34,6 +34,16 @@ std::string appendExtension(const std::string& file)
     return file;
 }
 
+std::string toLower(std::string str)
+{
+    for(int i = 0; i < str.size(); i++) {
+        if(str[i] >= 'A' && str[i] <= 'Z') {
+            str[i] = static_cast<char>(static_cast<int>(str[i]) + 32);
+        }
+    }
+    return str;
+}
+
 void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
@@ -43,9 +53,14 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         data = json::parse(f);
         f.close();
 
-        std::cout << std::string(data.at("title")) << std::endl;
-        std::cout << std::endl;
-        std::cout << std::string(data.at("scenario")) << std::endl;
+        std::string title = data.at("title");
+        std::string scenario = data.at("scenario");
+
+        if(!title.empty()) {
+            std::cout << title << std::endl;
+            std::cout << std::endl;
+        }
+        std::cout << scenario << std::endl;
         std::cout << std::endl;
 
         if(data.at("gameOver")) {
@@ -53,15 +68,19 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             break;
         }
 
-        std::string input;
-        std::cout << "> ";
-        std::getline(std::cin, input);
-        std::cout << std::endl;
-
         std::unordered_map<std::string, std::string> keywords = data.at("keywords");
-        if(keywords.count(input) < 1) {
+        std::string input;
+
+        while(true) {
+            std::cout << "> ";
+            std::getline(std::cin, input);
+            std::cout << std::endl;
+
+            input = toLower(input);
+            if(keywords.count(input) > 0) {
+                break;
+            } 
             std::cout << "There is a time and place for everything but not now." << std::endl;
-            continue;
         }
 
         scenario_file = path::joinPath(scenario_dir, appendExtension(data.at("keywords").at(input)));
