@@ -2,10 +2,31 @@
     "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.",
     "gameOver": false,
     "choices": {
-        "sleep": "sleep.json",
-        "up|stand": "get_up.json",
-        "jerk|masturbate|porn|love": "masturbate.json",
-        "choke|die|kill yourself|suicide|unalive": "death_in_bed.json"
+        "sleep": {
+            "next": "sleep.json",
+            "requirements": [],
+            "provides": []
+        },
+        "up|stand": {
+            "next": "get_up.json",
+            "requirements": [],
+            "provides": []
+        },
+        "jerk|masturbate|porn|love": {
+            "next": "masturbate.json",
+            "requirements": [],
+            "provides": []
+        },
+        "choke|die|kill yourself|suicide|unalive": {
+            "next": "death_in_bed.json",
+            "requirements": [],
+            "provides": []
+        },
+        "drugs": {
+            "next": "drugs.json",
+            "requirements": [],
+            "provides": []
+        }
     },
     "excuses": [
         "Go away intrusive thoughts.",
