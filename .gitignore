@@ -9,6 +9,8 @@
 !test/src/**
 !resources/
 !resources/**
+!src/
+!src/**
 test/bin/
 !.gitignore
 !README.md
