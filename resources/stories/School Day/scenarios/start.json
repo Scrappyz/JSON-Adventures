@@ -1,34 +1,30 @@
 {
-    "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.",
+    "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.\nThere are some pills on the table.",
     "gameOver": false,
     "choices": {
         "sleep": {
-            "next": "sleep.json",
-            "requirements": [],
-            "provides": []
+            "next": "sleep.json"
         },
         "up|stand": {
-            "next": "get_up.json",
-            "requirements": [],
-            "provides": []
+            "next": "get_up.json"
         },
         "jerk|masturbate|porn|love": {
-            "next": "masturbate.json",
-            "requirements": [],
-            "provides": []
+            "next": "masturbate.json"
         },
         "choke|die|kill yourself|suicide|unalive": {
-            "next": "death_in_bed.json",
-            "requirements": [],
-            "provides": []
+            "next": "death_in_bed.json"
         },
-        "drugs": {
+        "pill": {
+            "message": "You took the pills.",
+            "gives": {"pills": 1}
+        },
+        "take pill|eat pill|consume pill|drug": {
             "next": "drugs.json",
-            "requirements": [],
-            "provides": []
+            "requires": {"pills": 1},
+            "takes": {"pills": 1}
         }
     },
-    "excuses": [
+    "invalids": [
         "Go away intrusive thoughts.",
         "Maybe another time.",
         "You are too tired to do that."

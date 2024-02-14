@@ -9,6 +9,11 @@
 using json = nlohmann::json;
 namespace path = os::path;
 
+enum Type {
+    SCENARIO = 0,
+    MESSAGE = 1
+};
+
 void writeScenario(const std::string& file, const std::string& name, const std::string& scenario, const std::unordered_map<std::string, std::string>& choices, bool game_over = false)
 {
     json j;
@@ -71,23 +76,60 @@ std::vector<std::string> parseChoice(const std::string& choice)
     return choices;
 }
 
-std::string getNextScenario(std::string input, const std::unordered_map<std::string, std::string>& choices)
+json getChoice(std::string input, const json& choices)
 {
     input = toLower(input);
-    for(const auto i : choices) {
-        std::vector<std::string> parsed = parseChoice(i.first);
+    for(const auto& i : choices.items()) {
+        std::vector<std::string> parsed = parseChoice(i.key());
         for(int j = 0; j < parsed.size(); j++) {
             if(input.find(parsed[j]) != std::string::npos) {
-                return i.second;
+                return i.value();
             }
         }
     }
-    return std::string();
+    
+    return json();
+}
+
+bool hasModifiers(const std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& requires)
+{
+    for(const auto& i : requires) {
+        if(modifiers.count(i.first) < 1) {
+            return false;
+        }
+
+        if(modifiers.at(i.first) < i.second) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void addModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& add)
+{
+    for(const auto& i : add) {
+        modifiers[i.first] += i.second;
+    }
+}
+
+void subtractModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& subtract)
+{
+    for(const auto& i : subtract) {
+        if(modifiers.count(i.first) < 1) {
+            continue;
+        }
+
+        modifiers[i.first] -= i.second;
+        if(modifiers.at(i.first) < 1) {
+            modifiers.erase(i.first);
+        }
+    }
 }
 
 void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
+    std::unordered_map<std::string, int> modifiers;
     std::ifstream f;
     json data;
 
@@ -105,8 +147,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             break;
         }
 
-        std::unordered_map<std::string, std::string> choices = data.at("choices");
-        std::vector<std::string> excuses = data.at("excuses");
+        std::vector<std::string> invalids = data.at("invalids");
         std::string input;
         std::string next_scenario;
 
@@ -114,12 +155,39 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             std::cout << "> ";
             std::getline(std::cin, input);
 
-            next_scenario = getNextScenario(input, choices);
+            json choice = getChoice(input, data.at("choices"));
+            if(choice.contains("requires") && !hasModifiers(modifiers, choice.at("requires"))) {
+                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                std::cout << std::endl;
+                continue;
+            }
+
+            if(choice.contains("next")) {
+                next_scenario = choice.at("next");
+            }
+            
+            if(choice.contains("takes")) {
+                subtractModifiers(modifiers, choice.at("takes"));
+            }
+
+            if(choice.contains("gives")) {
+                addModifiers(modifiers, choice.at("gives"));
+            }
+
+            bool has_message = choice.contains("message");
+            if(has_message) {
+                std::cout << std::string(choice.at("message")) << std::endl;
+                std::cout << std::endl;
+            }
+
             if(!next_scenario.empty()) {
                 break;
             }
-            std::cout << excuses[randomNumber(0, excuses.size()-1)] << std::endl;
-            std::cout << std::endl;
+
+            if(!has_message) {
+                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                std::cout << std::endl;
+            }
         }
 
         scenario_file = path::joinPath(scenario_dir, appendExtension(next_scenario));
