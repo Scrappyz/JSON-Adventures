@@ -1,0 +1,14 @@
+#pragma once
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include "json.hpp"
+
+std::string toLower(std::string str);
+int randomNumber(int min, int max);
+std::vector<std::string> parseChoice(const std::string& choice);
+std::string getChoice(std::string input, const nlohmann::json& choices);
+bool hasModifiers(const std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& requires);
+void addModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& add);
+void subtractModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& subtract);
