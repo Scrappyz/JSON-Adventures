@@ -76,19 +76,19 @@ std::vector<std::string> parseChoice(const std::string& choice)
     return choices;
 }
 
-json getChoice(std::string input, const json& choices)
+std::string getChoice(std::string input, const json& choices)
 {
     input = toLower(input);
     for(const auto& i : choices.items()) {
         std::vector<std::string> parsed = parseChoice(i.key());
         for(int j = 0; j < parsed.size(); j++) {
             if(input.find(parsed[j]) != std::string::npos) {
-                return i.value();
+                return i.key();
             }
         }
     }
     
-    return json();
+    return std::string();
 }
 
 bool hasModifiers(const std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& requires)
@@ -130,6 +130,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
     std::unordered_map<std::string, int> modifiers;
+    std::unordered_map<std::string, int> tries;
     std::ifstream f;
     json data;
 
@@ -155,30 +156,45 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             std::cout << "> ";
             std::getline(std::cin, input);
 
-            json choice = getChoice(input, data.at("choices"));
-            if(choice.contains("requires") && !hasModifiers(modifiers, choice.at("requires"))) {
+            std::string choice = getChoice(input, data.at("choices"));
+            json choice_data = data.at("choices").at(choice);
+            int max_tries = 1;
+
+            if(choice_data.contains("tries")) {
+                max_tries = choice_data.at("tries");
+            }
+
+            if(tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
                 std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
                 std::cout << std::endl;
                 continue;
             }
 
-            if(choice.contains("next")) {
-                next_scenario = choice.at("next");
+            if(choice_data.contains("requires") && !hasModifiers(modifiers, choice_data.at("requires"))) {
+                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                std::cout << std::endl;
+                continue;
+            }
+
+            if(choice_data.contains("next")) {
+                next_scenario = choice_data.at("next");
             }
             
-            if(choice.contains("takes")) {
-                subtractModifiers(modifiers, choice.at("takes"));
+            if(choice_data.contains("takes")) {
+                subtractModifiers(modifiers, choice_data.at("takes"));
             }
 
-            if(choice.contains("gives")) {
-                addModifiers(modifiers, choice.at("gives"));
+            if(choice_data.contains("gives")) {
+                addModifiers(modifiers, choice_data.at("gives"));
             }
 
-            bool has_message = choice.contains("message");
+            bool has_message = choice_data.contains("message");
             if(has_message) {
-                std::cout << std::string(choice.at("message")) << std::endl;
+                std::cout << std::string(choice_data.at("message")) << std::endl;
                 std::cout << std::endl;
             }
+
+            tries[choice]++;
 
             if(!next_scenario.empty()) {
                 break;
@@ -190,6 +206,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
         }
 
+        tries.clear();
         scenario_file = path::joinPath(scenario_dir, appendExtension(next_scenario));
     }
 }
