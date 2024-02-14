@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
+#include "helper.hpp"
 
-TEST(tt, t)
+TEST(toLower, lowercase)
 {
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(toLower("pO"), "po");
 }
