@@ -157,6 +157,13 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             std::getline(std::cin, input);
 
             std::string choice = getChoice(input, data.at("choices"));
+
+            if(choice.empty()) {
+                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                std::cout << std::endl;
+                continue;
+            }
+
             json choice_data = data.at("choices").at(choice);
             int max_tries = 1;
 
@@ -164,7 +171,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
                 max_tries = choice_data.at("tries");
             }
 
-            if(tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
+            if(max_tries >= 0 && tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
                 std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
                 std::cout << std::endl;
                 continue;
