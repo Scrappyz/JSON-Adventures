@@ -1,7 +1,19 @@
 #include "helper.hpp"
+#include <iostream>
 #include <random>
+#include <chrono>
+#include <thread>
 
 using json = nlohmann::json;
+
+void type(const std::string& str, int delay, const std::string& append)
+{
+    for(const auto& i : str) {
+        std::cout << i;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+    }
+    std::cout << append;
+}
 
 std::string toLower(std::string str)
 {

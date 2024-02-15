@@ -12,6 +12,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
     std::unordered_map<std::string, int> modifiers;
     std::unordered_map<std::string, int> tries;
+    int type_delay = 20;
     std::ifstream f;
     json data;
 
@@ -21,7 +22,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         f.close();
 
         std::string scenario = data.at("scenario");
-        std::cout << scenario << std::endl;
+        type(scenario, type_delay, "\n");
         std::cout << std::endl;
 
         if(data.at("gameOver")) {
@@ -40,7 +41,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             std::string choice = getChoice(input, data.at("choices"));
 
             if(choice.empty()) {
-                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
@@ -53,13 +54,13 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             if(max_tries >= 0 && tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
-                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
 
             if(choice_data.contains("requires") && !hasModifiers(modifiers, choice_data.at("requires"))) {
-                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
@@ -78,7 +79,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
             bool has_message = choice_data.contains("message");
             if(has_message) {
-                std::cout << std::string(choice_data.at("message")) << std::endl;
+                type(choice_data.at("message"), type_delay, "\n");
                 std::cout << std::endl;
             }
 
@@ -89,7 +90,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             if(!has_message) {
-                std::cout << invalids[randomNumber(0, invalids.size()-1)] << std::endl;
+                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
                 std::cout << std::endl;
             }
         }
@@ -101,9 +102,8 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
 int main()
 {
-    // std::string scenario_dir = path::joinPath(path::sourcePath(), "../../resources/stories/School Day/scenarios");
-    // std::string start_scenario = path::appendFileExtension("start", "json");
-    // play(scenario_dir, start_scenario);
-    std::cout << toLower("This moTHe");
+    std::string scenario_dir = path::joinPath(path::sourcePath(), "../../resources/stories/School Day/scenarios");
+    std::string start_scenario = path::appendFileExtension("start", "json");
+    play(scenario_dir, start_scenario);
     return 0;
 }

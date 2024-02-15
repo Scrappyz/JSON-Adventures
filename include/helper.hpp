@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "json.hpp"
 
+void type(const std::string& str, int delay, const std::string& append = "");
 std::string toLower(std::string str);
 int randomNumber(int min, int max);
 std::vector<std::string> parseChoice(const std::string& choice);
