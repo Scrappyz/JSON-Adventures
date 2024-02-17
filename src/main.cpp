@@ -25,7 +25,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         type(scenario, type_delay, "\n");
         std::cout << std::endl;
 
-        if(data.at("gameOver")) {
+        if(data.contains("gameOver") && data.at("gameOver")) {
             std::cout << "Game Over" << std::endl;
             break;
         }
