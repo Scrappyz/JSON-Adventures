@@ -12,7 +12,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
     std::unordered_map<std::string, int> modifiers;
     std::unordered_map<std::string, int> tries;
-    int type_delay = 20;
+    int type_delay = 15;
     bool game_over = false;
     std::ifstream f;
     json data;
@@ -28,6 +28,11 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
         if(data.contains("gameOver") && data.at("gameOver")) {
             std::cout << "Game Over" << std::endl;
+            game_over = true;
+            break;
+        }
+
+        if(!data.contains("choices") || data.at("choices").empty()) {
             game_over = true;
             break;
         }
