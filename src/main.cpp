@@ -61,13 +61,13 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             if(max_tries >= 0 && tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
-                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
+                type(getInvalidMessage(data, choice_data, "tries"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
 
             if(choice_data.contains("requires") && !hasModifiers(modifiers, choice_data.at("requires"))) {
-                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
+                type(getInvalidMessage(data, choice_data, "requires"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
@@ -103,7 +103,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             if(!has_message) {
-                type(invalids[randomNumber(0, invalids.size()-1)], type_delay, "\n");
+                type(getInvalidMessage(data, choice_data, "default"), type_delay, "\n");
                 std::cout << std::endl;
             }
         }

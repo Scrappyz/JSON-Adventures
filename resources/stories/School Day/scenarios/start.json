@@ -16,7 +16,18 @@
         "pill": {
             "message": "You took the pills.",
             "gives": {"pills": 1},
-            "tries": -1
+            "tries": 1,
+            "invalids": {
+                "requires": [
+                    "You don't have the skills for this."
+                ],
+                "tries": [
+                    "You already took the pill."
+                ],
+                "default": [
+                    "Try finger but hole."
+                ]
+            }
         },
         "take pill|eat pill|consume pill|drug": {
             "next": "drugs.json",

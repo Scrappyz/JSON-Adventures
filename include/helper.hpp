@@ -13,3 +13,4 @@ std::string getChoice(std::string input, const nlohmann::json& choices);
 bool hasModifiers(const std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& requires);
 void addModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& add);
 void subtractModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& subtract);
+std::string getInvalidMessage(const nlohmann::json& data, const nlohmann::json& choice_invalids, const std::string& type);

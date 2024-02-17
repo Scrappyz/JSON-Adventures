@@ -100,3 +100,29 @@ void subtractModifiers(std::unordered_map<std::string, int>& modifiers, const st
         }
     }
 }
+
+std::string getInvalidMessage(const json& data, const json& choice_data, const std::string& type)
+{
+    std::vector<std::string> msgs;
+    json choice_invalids;
+    if(choice_data.contains("invalids")) {
+        choice_invalids = choice_data.at("invalids");
+    }
+
+    if(!choice_invalids.empty() && choice_invalids.contains(type) && !choice_invalids.at(type).empty()) {
+        msgs = choice_invalids.at(type);
+        return msgs[randomNumber(0, msgs.size()-1)];
+    }
+
+    if(!choice_invalids.empty() && choice_invalids.contains("default") && !choice_invalids.at("default").empty()) {
+        msgs = choice_invalids.at("default");
+        return msgs[randomNumber(0, msgs.size()-1)];
+    }
+
+    if(data.contains("invalids") && !data.at("invalids").empty()) {
+        msgs = data.at("invalids");
+        return msgs[randomNumber(0, msgs.size()-1)];
+    }
+
+    return std::string();
+}
