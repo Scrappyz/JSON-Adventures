@@ -1,4 +1,5 @@
 {
+    "gameOver": true,
     "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.\nThere are some pills on the table.",
     "choices": {
         "sleep": {
@@ -16,7 +17,8 @@
         "pill": {
             "message": "You took the pills.",
             "gives": {"pills": 1},
-            "tries": -1
+            "tries": -1,
+            "gameOver": true
         },
         "take pill|eat pill|consume pill|drug": {
             "next": "drugs.json",

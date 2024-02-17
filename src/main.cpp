@@ -13,10 +13,11 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
     std::unordered_map<std::string, int> modifiers;
     std::unordered_map<std::string, int> tries;
     int type_delay = 20;
+    bool game_over = false;
     std::ifstream f;
     json data;
 
-    while(true) {
+    while(!game_over) {
         f.open(scenario_file);
         data = json::parse(f);
         f.close();
@@ -27,6 +28,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
         if(data.contains("gameOver") && data.at("gameOver")) {
             std::cout << "Game Over" << std::endl;
+            game_over = true;
             break;
         }
 
@@ -34,7 +36,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         std::string input;
         std::string next_scenario;
 
-        while(true) {
+        while(!game_over) {
             std::cout << "> ";
             std::getline(std::cin, input);
 
@@ -85,6 +87,12 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 
             tries[choice]++;
 
+            if(choice_data.contains("gameOver") && choice_data.at("gameOver")) {
+                std::cout << "Game Over" << std::endl;
+                game_over = true;
+                break;
+            }
+
             if(!next_scenario.empty()) {
                 break;
             }
@@ -96,7 +104,9 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         }
 
         tries.clear();
-        scenario_file = path::joinPath(scenario_dir, path::appendFileExtension(next_scenario, "json"));
+        if(!game_over) {
+            scenario_file = path::joinPath(scenario_dir, path::appendFileExtension(next_scenario, "json"));
+        }
     }
 }
 
