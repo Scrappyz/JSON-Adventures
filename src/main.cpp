@@ -72,15 +72,15 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
                 continue;
             }
 
-            if(choice_data.contains("next")) {
+            if(choice_data.contains("next") && !choice_data.at("next").empty()) {
                 next_scenario = choice_data.at("next");
             }
             
-            if(choice_data.contains("takes")) {
+            if(choice_data.contains("takes") && !choice_data.at("takes").empty()) {
                 subtractModifiers(modifiers, choice_data.at("takes"));
             }
 
-            if(choice_data.contains("gives")) {
+            if(choice_data.contains("gives") && !choice_data.at("gives").empty()) {
                 addModifiers(modifiers, choice_data.at("gives"));
             }
 
