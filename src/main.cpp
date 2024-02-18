@@ -27,12 +27,13 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         std::cout << std::endl;
 
         if(data.contains("gameOver") && data.at("gameOver")) {
-            std::cout << "Game Over" << std::endl;
+            type("[Game Over]", type_delay);
             game_over = true;
             break;
         }
 
         if(!data.contains("choices") || data.at("choices").empty()) {
+            type("[Game Over]", type_delay);
             game_over = true;
             break;
         }
@@ -93,7 +94,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             attempts[choice]++;
 
             if(choice_data.contains("gameOver") && choice_data.at("gameOver")) {
-                std::cout << "Game Over" << std::endl;
+                type("[Game Over]", type_delay);
                 game_over = true;
                 break;
             }

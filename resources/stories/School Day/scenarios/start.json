@@ -36,7 +36,12 @@
         "take pill|eat pill|consume pill|drug": {
             "next": "drugs.json",
             "require": {"pills": 1},
-            "subtract": {"pills": 1}
+            "subtract": {"pills": 1},
+            "invalids": {
+                "require": [
+                    "You don't have anything to do drugs on."
+                ]
+            }
         }
     },
     "invalids": [
