@@ -131,3 +131,22 @@ std::string getInvalidMessage(const json& data, const json& choice_data, const s
 
     return std::string();
 }
+
+std::string scenarioToString(const nlohmann::json& scenario)
+{
+    std::string str;
+    if(scenario.is_array()) {
+        for(int i = 0; i < scenario.size(); i++) {
+            str += scenario[i];
+            if(i < scenario.size()-1) {
+                str.push_back('\n');
+            }
+        }
+    }
+
+    if(scenario.is_string()) {
+        str = scenario;
+    }
+
+    return str;
+}

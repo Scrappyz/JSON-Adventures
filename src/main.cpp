@@ -22,7 +22,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
         data = json::parse(f);
         f.close();
 
-        std::string scenario = data.at("scenario");
+        std::string scenario = scenarioToString(data.at("scenario"));
         type(scenario, type_delay, "\n");
         std::cout << std::endl;
 

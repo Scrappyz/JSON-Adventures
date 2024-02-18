@@ -1,5 +1,9 @@
 {
-    "scenario": "You wake up with the sound of your alarm.\nIt is 8am, you need to go to school.\nThere are some pills on the table.",
+    "scenario": [
+        "You wake up with the sound of your alarm.", 
+        "It is 8am, you need to go to school.",
+        "There are some pills on the table."
+    ],
     "choices": {
         "sleep": {
             "next": "sleep.json"

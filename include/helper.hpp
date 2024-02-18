@@ -14,3 +14,4 @@ bool hasModifiers(const std::unordered_map<std::string, int>& modifiers, const s
 void addModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& add);
 void subtractModifiers(std::unordered_map<std::string, int>& modifiers, const std::unordered_map<std::string, int>& subtract);
 std::string getInvalidMessage(const nlohmann::json& data, const nlohmann::json& choice_invalids, const std::string& type);
+std::string scenarioToString(const nlohmann::json& data);
