@@ -109,6 +109,11 @@ std::string getInvalidMessage(const json& data, const json& choice_data, const s
         choice_invalids = choice_data.at("invalids");
     }
 
+    if(!choice_invalids.empty() && choice_invalids.is_array()) {
+        msgs = choice_invalids;
+        return msgs[randomNumber(0, msgs.size()-1)];
+    }
+
     if(!choice_invalids.empty() && choice_invalids.contains(type) && !choice_invalids.at(type).empty()) {
         msgs = choice_invalids.at(type);
         return msgs[randomNumber(0, msgs.size()-1)];

@@ -16,12 +16,12 @@
         "pill": {
             "message": "You took the pills.",
             "add": {"pills": 1},
-            "tries": 1,
+            "attempts": 1,
             "invalids": {
                 "require": [
                     "You don't have the skills for this."
                 ],
-                "tries": [
+                "attempts": [
                     "You already took the pill."
                 ],
                 "default": [
