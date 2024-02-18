@@ -11,7 +11,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
 {
     std::string scenario_file = path::joinPath(scenario_dir, start_scenario);
     std::unordered_map<std::string, int> modifiers;
-    std::unordered_map<std::string, int> tries;
+    std::unordered_map<std::string, int> attempts;
     int type_delay = 15;
     bool game_over = false;
     std::ifstream f;
@@ -54,20 +54,20 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             json choice_data = data.at("choices").at(choice);
-            int max_tries = 1;
+            int max_attempts = 1;
 
-            if(choice_data.contains("tries")) {
-                max_tries = choice_data.at("tries");
+            if(choice_data.contains("attempts")) {
+                max_attempts = choice_data.at("attempts");
             }
 
-            if(max_tries >= 0 && tries.count(choice) > 0 && tries.at(choice) >= max_tries) {
-                type(getInvalidMessage(data, choice_data, "tries"), type_delay, "\n");
+            if(max_attempts >= 0 && attempts.count(choice) > 0 && attempts.at(choice) >= max_attempts) {
+                type(getInvalidMessage(data, choice_data, "attempts"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
 
-            if(choice_data.contains("requires") && !hasModifiers(modifiers, choice_data.at("requires"))) {
-                type(getInvalidMessage(data, choice_data, "requires"), type_delay, "\n");
+            if(choice_data.contains("require") && !hasModifiers(modifiers, choice_data.at("require"))) {
+                type(getInvalidMessage(data, choice_data, "require"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
@@ -76,12 +76,12 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
                 next_scenario = choice_data.at("next");
             }
             
-            if(choice_data.contains("takes") && !choice_data.at("takes").empty()) {
-                subtractModifiers(modifiers, choice_data.at("takes"));
+            if(choice_data.contains("subtract") && !choice_data.at("subtract").empty()) {
+                subtractModifiers(modifiers, choice_data.at("subtract"));
             }
 
-            if(choice_data.contains("gives") && !choice_data.at("gives").empty()) {
-                addModifiers(modifiers, choice_data.at("gives"));
+            if(choice_data.contains("add") && !choice_data.at("add").empty()) {
+                addModifiers(modifiers, choice_data.at("add"));
             }
 
             bool has_message = choice_data.contains("message");
@@ -90,7 +90,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
                 std::cout << std::endl;
             }
 
-            tries[choice]++;
+            attempts[choice]++;
 
             if(choice_data.contains("gameOver") && choice_data.at("gameOver")) {
                 std::cout << "Game Over" << std::endl;
@@ -108,7 +108,7 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
         }
 
-        tries.clear();
+        attempts.clear();
         if(!game_over) {
             scenario_file = path::joinPath(scenario_dir, path::appendFileExtension(next_scenario, "json"));
         }

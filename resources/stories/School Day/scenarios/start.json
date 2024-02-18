@@ -15,10 +15,10 @@
         },
         "pill": {
             "message": "You took the pills.",
-            "gives": {"pills": 1},
+            "add": {"pills": 1},
             "tries": 1,
             "invalids": {
-                "requires": [
+                "require": [
                     "You don't have the skills for this."
                 ],
                 "tries": [
@@ -31,8 +31,8 @@
         },
         "take pill|eat pill|consume pill|drug": {
             "next": "drugs.json",
-            "requires": {"pills": 1},
-            "takes": {"pills": 1}
+            "require": {"pills": 1},
+            "subtract": {"pills": 1}
         }
     },
     "invalids": [
