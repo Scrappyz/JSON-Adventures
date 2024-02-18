@@ -23,3 +23,58 @@ TEST(getChoice, get)
     EXPECT_EQ(getChoice("wassup there", j), "wassup");
     EXPECT_EQ(getChoice("her kill", j), "kill");
 }
+
+TEST(getInvalidMessage, working)
+{
+    json data;
+    json choice_data;
+
+    data = json::parse(R"(
+        {
+            "invalids": [
+                "wassup"
+            ]
+        }
+    )");
+
+    choice_data = json::parse(R"(
+        {
+            "invalids": {
+                "failedRequire": "shit",
+                "failedAttempt": "hi",
+                "default": "kool"
+            }
+        }
+    )");
+
+    EXPECT_EQ(getInvalidMessage(data, choice_data, "failedRequire"), "shit");
+    EXPECT_EQ(getInvalidMessage(data, choice_data, "failedAttempt"), "hi");
+    EXPECT_EQ(getInvalidMessage(data, json(), "failedRequire"), "wassup");
+
+    data = json::parse(R"(
+        {
+            "invalids": "wassup"
+        }
+    )");
+
+    EXPECT_EQ(getInvalidMessage(data, json(), "failedRequire"), "wassup");
+
+    choice_data = json::parse(R"(
+        {
+            "invalids": {
+                "failedRequire": [
+                    "shit"
+                ],
+                "failedAttempt": [
+                    "hi"
+                ],
+                "default": [
+                    "kool"
+                ]
+            }
+        }
+    )");
+
+    EXPECT_EQ(getInvalidMessage(data, choice_data, "failedRequire"), "shit");
+    EXPECT_EQ(getInvalidMessage(data, choice_data, "failedAttempt"), "hi");
+}

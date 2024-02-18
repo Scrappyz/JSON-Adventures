@@ -62,13 +62,13 @@ void play(const std::string& scenario_dir, const std::string& start_scenario)
             }
 
             if(max_attempts >= 0 && attempts.count(choice) > 0 && attempts.at(choice) >= max_attempts) {
-                type(getInvalidMessage(data, choice_data, "attempts"), type_delay, "\n");
+                type(getInvalidMessage(data, choice_data, "failedAttempt"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
 
             if(choice_data.contains("require") && !hasModifiers(modifiers, choice_data.at("require"))) {
-                type(getInvalidMessage(data, choice_data, "require"), type_delay, "\n");
+                type(getInvalidMessage(data, choice_data, "failedRequire"), type_delay, "\n");
                 std::cout << std::endl;
                 continue;
             }
